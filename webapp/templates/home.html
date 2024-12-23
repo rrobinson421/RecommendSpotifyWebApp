@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <form class="example" method="GET" action="{% url 'search_results' %}">
+        <select name="filter" id="filter">
+            <option value="artist">Artist</option>
+            <option value="song">Song</option>
+            <option value="album">Album</option>
+        </select>
+
+        <div class="form-group">
+            <input type="text" placeholder="Search..." name="search" id="search">
+        </div>
+
+        <button type="submit"><i class="fa fa-search"></i></button>
+
+        <label class="container">One
+            <input type="checkbox" checked="checked" name="check_1" id="check_1">
+            <span class="checkmark"></span>
+        </label>
+    </form>
+
+{% endblock %}
