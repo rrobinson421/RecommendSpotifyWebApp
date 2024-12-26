@@ -17,14 +17,25 @@
 
         <div class="form-group">
             <input type="text" placeholder="Search..." name="search" id="search">
+            <button type="submit"><i class="fa fa-search"></i></button>
         </div>
 
-        <button type="submit"><i class="fa fa-search"></i></button>
+        </div class="check-group">
+            <input type="checkbox" name="check_1" id="check_1" checked="checked"/>
+            <span class="checkboxtext">Default</span>
 
-        <label class="container">One
-            <input type="checkbox" checked="checked" name="check_1" id="check_1">
-            <span class="checkmark"></span>
-        </label>
+            <input type="checkbox" name="check_2" id="check_2" checked="unchecked"/>
+            <span class="checkboxtext">Most Popular</span>
+        </div>
     </form>
+
+    <!--
+    <div class="check-group">
+            <label class="myCheckbox">
+                <input type="checkbox" name="check_1" id="check_1" checked="checked"/>
+                <span class="checkbox-text">One</span>
+            </label>
+        </div>
+    -->
 
 {% endblock %}

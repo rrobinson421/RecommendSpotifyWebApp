@@ -31,5 +31,8 @@ def search_results(request):
             return homepage(request)
 
 def set_settings(request):
+    recommend.main.reset_settings()
     if request.GET.get('check_1'):
-        print("checked")
+        recommend.main.set_check_1(True)
+    if request.GET.get('check_2'):
+        recommend.main.set_check_2(True)

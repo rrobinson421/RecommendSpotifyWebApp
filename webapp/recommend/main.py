@@ -17,8 +17,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=YOUR_APP_CLIENT_ID,
 
 def test_for_artist(name):
     results = sp.search(q='artist:' + name, type='artist', limit=1)
+    reset_ids()
     if results['artists']['items'] and name != "":
-        reset_ids()
         set_artist_id(results['artists']['items'][0]['id'])
         return True
     else:
@@ -26,8 +26,8 @@ def test_for_artist(name):
 
 def test_for_song(name):
     results = sp.search(q='track:' + name, type='track', limit=1)
+    reset_ids()
     if results['tracks']['items'] and name != "":
-        reset_ids()
         set_song_id(results['tracks']['items'][0]['id'])
         return True
     else:
@@ -35,8 +35,8 @@ def test_for_song(name):
 
 def test_for_album(name):
     results = sp.search(q='album:' + name, type='album', limit=1)
+    reset_ids()
     if results['albums']['items'] and name != "":
-        reset_ids()
         set_album_id(results['albums']['items'][0]['id'])
         return True
     else:
@@ -80,3 +80,25 @@ def reset_ids():
     set_album_id('')
     set_artist_id('')
     set_song_id('')
+
+def set_check_1(bool):
+    recommend.global_var.check_1 = bool
+
+def set_check_2(bool):
+    recommend.global_var.check_2 = bool
+
+def get_check_1():
+    return recommend.global_var.check_1
+
+def get_check_2():
+    return recommend.global_var.check_2
+
+def reset_settings():
+    set_check_1(False)
+    set_check_2(False)
+
+def apply_recommendations():
+    if get_check_1() == True:
+        return None
+    else:
+        return None
