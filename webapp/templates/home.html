@@ -15,6 +15,13 @@
             <option value="album">Album</option>
         </select>
 
+        <select name="amount" id="amount">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+        </select>
+
         <div class="form-group">
             <input type="text" placeholder="Search..." name="search" id="search">
             <button type="submit"><i class="fa fa-search"></i></button>
@@ -26,16 +33,10 @@
 
             <input type="checkbox" name="check_2" id="check_2" checked="unchecked"/>
             <span class="checkboxtext">Most Popular</span>
+
+            <input type="checkbox" name="check_3" id="check_3" checked="checked"/>
+            <span class="checkboxtext">Save Most Recent</span>
         </div>
     </form>
-
-    <!--
-    <div class="check-group">
-            <label class="myCheckbox">
-                <input type="checkbox" name="check_1" id="check_1" checked="checked"/>
-                <span class="checkbox-text">One</span>
-            </label>
-        </div>
-    -->
 
 {% endblock %}

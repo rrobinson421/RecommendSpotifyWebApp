@@ -8,10 +8,14 @@
 
     <body>
         <h1>{{ title }}</h1>
-        <p>{{ urls }}</p>
+        <p>{{ urls|linebreaksbr }}</p>
         <p>Artist id: {{ artist_id }}</p>
         <p>Song id: {{ song_id }}</p>
         <p>Album id: {{ album_id }}</p>
+    </body>
+
+    <body>
+        <p><br />{{ recommendations }}</p>
     </body>
 
 {% endblock %}

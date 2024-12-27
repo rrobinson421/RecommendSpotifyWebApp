@@ -66,14 +66,15 @@ def upt_page():
         "urls": get_urls(),
         "artist_id": get_artist_id(),
         "song_id": get_song_id(),
-        "album_id": get_album_id()
+        "album_id": get_album_id(),
+        "recommendations": get_recommendation_results()
     }
 
 def get_urls():
     output = ""
-    output += 'open.spotify.com/artist/' + get_artist_id() + ' '
-    output += 'open.spotify.com/track/' + get_song_id() + ' '
-    output += 'open.spotify.com/artist/' + get_album_id()
+    output += 'open.spotify.com/artist/' + get_artist_id() + '\n'
+    output += 'open.spotify.com/track/' + get_song_id() + '\n'
+    output += 'open.spotify.com/album/' + get_album_id() + '\n'
     return output
 
 def reset_ids():
@@ -81,24 +82,71 @@ def reset_ids():
     set_artist_id('')
     set_song_id('')
 
+def set_amount(amnt):
+    recommend.global_var.amount = amnt
+
+def get_amount():
+    return recommend.global_var.amount
+
+def set_type(type):
+    recommend.global_var.type = type
+
+def get_type():
+    return recommend.global_var.type
+
 def set_check_1(bool):
-    recommend.global_var.check_1 = bool
+    recommend.global_var.default = bool
 
 def set_check_2(bool):
-    recommend.global_var.check_2 = bool
+    recommend.global_var.mostPopular = bool
+
+def set_check_3(bool):
+    recommend.global_var.saveRecent = bool
+
+def set_all_checks(bool):
+    set_check_1(bool)
+    set_check_2(bool)
+    set_check_3(bool)
 
 def get_check_1():
-    return recommend.global_var.check_1
+    return recommend.global_var.default
 
 def get_check_2():
-    return recommend.global_var.check_2
+    return recommend.global_var.mostPopular
+
+def get_check_3():
+    return recommend.global_var.saveRecent
+
+def get_recommendation_results():
+    return recommend.global_var.recommendations
 
 def reset_settings():
-    set_check_1(False)
-    set_check_2(False)
+    set_amount(5)
+    set_type('artist')
+    set_all_checks(False)
 
 def apply_recommendations():
-    if get_check_1() == True:
-        return None
+    seed_id = ''
+    if filter == 'artist':
+        seed_id = get_artist_id
+    elif filter == 'song':
+        seed_id = get_song_id
     else:
-        return None
+        seed_id = get_album_id
+
+    if get_check_3() == True:
+        recommend.global_var.cached_recommendations = recommend.global_var.recommendations
+    if get_check_1() == True:
+        recommend.global_var.recommendations = get_recommendations(seed_id, get_amount())
+    else:
+        recommend.global_var.recommendations = "None"
+
+def get_recommendations(id, limit):
+    ##Get Access Token OR use relevant sp call
+    ##Call SpotifyAPI with relevant URI
+    ##Update recommendation string
+    return None
+
+##def get_recommendations with bool parameters for non-default
+
+##Implement mp3 sample and proper result UI
