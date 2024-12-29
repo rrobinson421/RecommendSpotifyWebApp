@@ -1,6 +1,9 @@
 import os
 import spotipy
 import recommend.global_var
+import base64
+import requests
+import json
 
 from spotipy.oauth2 import SpotifyOAuth
 from dotenv import load_dotenv
@@ -14,6 +17,23 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=YOUR_APP_CLIENT_ID,
                                                client_secret=YOUR_APP_CLIENT_SECRET,
                                                redirect_uri=YOUR_APP_REDIRECT_URI,
                                                scope="user-library-read"))
+
+def get_token_basic():
+    auth_header = base64.b64encode(f"{YOUR_APP_CLIENT_ID}:{YOUR_APP_CLIENT_SECRET}".encode()).decode()
+    url = "https://accounts.spotify.com/api/token"
+    headers = {
+        "Authorization": f"Basic {auth_header}"
+    }
+    data = {
+        "grant_type": "client_credentials"
+    }
+    response = requests.post(url, headers=headers, data=data)
+    response.raise_for_status()
+    return response.json().get("access_token")
+
+##TODO: Set up Guest Account Authentication
+##TODO: Remove testing methods
+##TODO: Update Nav Bar for Login support
 
 def test_for_artist(name):
     results = sp.search(q='artist:' + name, type='artist', limit=1)
@@ -67,7 +87,7 @@ def upt_page():
         "artist_id": get_artist_id(),
         "song_id": get_song_id(),
         "album_id": get_album_id(),
-        "recommendations": get_recommendation_results()
+        "recommendations": get_recommendation_results
     }
 
 def get_urls():
@@ -126,27 +146,49 @@ def reset_settings():
     set_all_checks(False)
 
 def apply_recommendations():
-    seed_id = ''
-    if filter == 'artist':
-        seed_id = get_artist_id
-    elif filter == 'song':
-        seed_id = get_song_id
-    else:
-        seed_id = get_album_id
+    filter = recommend.global_var.type
+    seed_artists = [get_artist_id()]
+    seed_tracks = [get_song_id()]
+    seed_genres = []
 
     if get_check_3() == True:
         recommend.global_var.cached_recommendations = recommend.global_var.recommendations
     if get_check_1() == True:
-        recommend.global_var.recommendations = get_recommendations(seed_id, get_amount())
+        ##recommend.global_var.recommendations = get_recommendations_default(seed_artists, seed_tracks, seed_genres, get_amount(), filter)
+        recommend.global_var.recommendations = get_recommendations_test()
+        print(recommend.global_var.recommendations)
     else:
         recommend.global_var.recommendations = "None"
 
-def get_recommendations(id, limit):
-    ##Get Access Token OR use relevant sp call
-    ##Call SpotifyAPI with relevant URI
-    ##Update recommendation string
-    return None
+def get_recommendations_default(seed_artists, seed_tracks, seed_genres, lim, filter):
+    if not recommend.global_var.logged_in:
+        token = get_token_basic()
+    else:
+        token = get_token_basic()
+    url = "https://api.spotify.com/v1/recommendations"
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+    params = {
+        "seed_artists": ",".join(seed_artists) if seed_artists and seed_artists != '' else None,
+        "seed_tracks": ",".join(seed_tracks) if seed_tracks and seed_tracks != '' else None,
+        "seed_genres": ",".join(seed_genres) if seed_genres else None,
+        "limit": lim
+    }
+    recommendation_json = requests.get(url, headers=headers, params=params)
+    recommendation_json.raise_for_status()
+    return parse_json(recommendation_json, filter)
 
-##def get_recommendations with bool parameters for non-default
-
-##Implement mp3 sample and proper result UI
+def get_recommendations_test():
+    filter = 'song'
+    token = get_token_basic()
+    url = "https://api.spotify.com/v1/recommendations?seed_artists=&seed_tracks=4TGZTPJ50VXfqCIEwf6Bmm&limit=5"
+    headers = {
+        "Authorization": f"Bearer {token}"
+    }
+    rec_test = requests.get(url, headers=headers)
+    rec_test.raise_for_status()
+    return parse_json(rec_test, filter)
+    
+def parse_json(json, filter):
+    return "got json"

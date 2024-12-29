@@ -6,6 +6,8 @@ default = False
 mostPopular = False
 saveRecent = False
 
+logged_in = False
+
 amount = 5
 type = 'artist'
 recommendations = 'None'
